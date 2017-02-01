@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Naturl Gas Bill Translator</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+
+<h1>Natural Gas Bill Translator</h1>
+<center><p>Enter only numerical values.</p></center>
+<center><p>If the value does not exist, then ignore the field.</p></center>
+
+<form>
+	<div class="date">
+		<input type="text" id="month1" placeholder="start month"/>
+		<input type="text" id="day1" placeholder="start day"/>
+		<input type="text" id="year1" placeholder="start year"/>
+	</div>
+	<div class="date">
+		<input type="text" id="month2" placeholder="end month"/>
+		<input type="text" id="day2" placeholder="end day"/>
+		<input type="text" id="year2" placeholder="end year"/>
+	</div>
+    <br />
+
+	<div class="numbers">
+		<ul class="nums">
+			<li><input type="number" step="any" id="gas1_m3" placeholder="gas consumption in m^3 for first date range"/></li>
+			<li><input type="number" step="any" id="gas2_m3" placeholder="gas consumption in m^3 for second date range"/></li>
+			<br />
+			<li><input type="number" step="any" id="gas1price" placeholder="gas price in cents per m^3 for first date range"/></li>
+			<li><input type="number" step="any" id="gas2price" placeholder="gas price in cents per m^3 for second date range"/></li>
+			<li><input type="number" step="any" id="gas1priceA" placeholder="gas price adjustment in cents per m^3 for first date range"/></li>
+			<li><input type="number" step="any" id="gas2priceA" placeholder="gas price adjustment in cents per m^3 for second date range"/></li>
+		</ul>
+		
+        <ul class="nums">
+			<li><input type="number" step="any" id="trans1price" placeholder="transportation price in cents per m^3 of gas for first date range"/></li>
+			<li><input type="number" step="any" id="trans2price" placeholder="transportation price in cents per m^3 of gas for second date range"/></li>
+            <li><input type="number" step="any" id="trans1priceA" placeholder="transportation price adjustment in cents per m^3 of gas for first date range"/></li>
+			<li><input type="number" step="any" id="trans2priceA" placeholder="transportation price adjustment in cents per m^3 of gas for second date range"/></li>
+            <br />
+            <li><input type="number" step="any" id="stor1price" placeholder="storage price in cents per m^3 of gas for first date range"/></li>
+            <li><input type="number" step="any" id="stor2price" placeholder="storage price in cents per m^3 of gas for second date range"/></li>
+            <li><input type="number" step="any" id="stor1priceA" placeholder="storage price adjustment in cents per m^3 of gas for first date range"/></li>
+            <li><input type="number" step="any" id="stor2priceA" placeholder="storage price adjustment in cents per m^3 of gas for second date range"/></li>
+            <br />
+            <li><input type="number" step="any" id="del1price" placeholder="delivery price in cents per m^3 of gas for first date range"/></li>
+			<li><input type="number" step="any" id="del2price" placeholder="delivery price in cents per m^3 of gas for second date range"/></li>
+			<li><input type="number" step="any" id="del1priceA" placeholder="delivery price adjustment in cents per m^3 of gas for first date range"/></li>
+            <li><input type="number" step="any" id="del2priceA" placeholder="delivery price adjustment in cents per m^3 of gas for second date range"/></li>
+            <li class="fee"><input type="number" step="any" value="21"/></li>
+         </ul>
+	</div>
+</form>
+<br />
+
+<center><button onclick="transform()">translate</button></center>
+<br />
+
+<div class="output">
+
+	<div class="items">
+		<p>cost of everything + 13% HST&equals;&nbsp;</p>
+		<p>cost of just the consumed gas + 13% HST&equals;&nbsp;</p>
+		<p>cost of the remainder + 13% HST&equals;&nbsp;</p>
+		<p>average consumption of the gas &equals;&nbsp;</p>
+		<p>average price of gas &equals;&nbsp;</p>
+		<p>average price of everything &equals;&nbsp;</p>
+		<p>percent of total cost paying for just the gas &equals;&nbsp;</p>
+		<p>&nbsp;</p>
+	</div>
+
+	<div class="values">
+		<p id="costAll"></p>
+		<p id="costGas"></p>
+		<p id="costRemainder"></p>
+		<p id="aveUsage"></p>
+		<p id="cost"></p>
+		<p id="totalCost"></p>
+		<p id="percent"></p>
+	</div>
+
+</div>
+<hr/>
+
+<p class="p">visual breakdown of cost</p>
+<div class="breakdown">
+	<div class="monthlyFee"><span>monthly fee</span></div>
+	<div class="transportation"><span>transportation</span></div>
+	<div class="storage"><span>storage</span></div>
+	<div class="delivery"><span>delivery</span></div>
+	<div class="tax"><span>tax</span></div>
+	<div class="naturalGas"><span>gas</span></div>
+</div>
+
+<script>
+
+var g1 = 0;
+var g2 = 0;
+var gP1 = 0; 
+var gP2 = 0;
+var gP1A = 0; 
+var gP2A = 0;
+var tP1 = 0; 
+var tP2 = 0;  
+var tP1A = 0; 
+var tP2A = 0;
+var sP1 = 0; 
+var sP2 = 0;  
+var sP1A = 0; 
+var sP2A = 0; 
+var dP1 = 0; 
+var dP2 = 0;
+var dP1A = 0; 
+var dP2A = 0; 
+const M = 21;	
+const hst = 0.13;
+
+function transform() {
+// "+" keeps var a number type and doesn't turn it into a string
+	var m1 = +document.getElementById("month1").value;	
+	var d1 = +document.getElementById("day1").value;
+	var y1 = +document.getElementById("year1").value;
+	var m2 = +document.getElementById("month2").value;
+	var d2 = +document.getElementById("day2").value;
+	var y2 = +document.getElementById("year2").value;
+	
+	var g1 = +document.getElementById("gas1_m3").value;
+	var g2 = +document.getElementById("gas2_m3").value;
+	
+	var gP1 = (+document.getElementById("gas1price").value)/100;
+	var gP2 = (+document.getElementById("gas2price").value)/100;
+	var gP1A = (+document.getElementById("gas1priceA").value)/100;
+	var gP2A = (+document.getElementById("gas2priceA").value)/100;
+	
+	var tP1 = (+document.getElementById("trans1price").value)/100;
+	var tP2 = (+document.getElementById("trans2price").value)/100;
+	var tP1A = (+document.getElementById("trans1priceA").value)/100;
+	var tPA2 = (+document.getElementById("trans2priceA").value)/100;
+	
+	var sP1 = (+document.getElementById("stor1price").value)/100;
+	var sP2 = (+document.getElementById("stor2price").value)/100;
+	var sP1A = (+document.getElementById("stor1priceA").value)/100;
+	var sP2A = (+document.getElementById("stor2priceA").value)/100;
+	
+	var dP1 = (+document.getElementById("del1price").value)/100;
+	var dP2 = (+document.getElementById("del2price").value)/100;
+	var dP1A = (+document.getElementById("del1priceA").value)/100;
+	var dP2A = (+document.getElementById("del2priceA").value)/100;
+
+	var usage = g1 + g2;
+	var range = Math.ceil((new Date(y2, m2, d2) - new Date(y1, m1, d1)) / 86400000)
+	var aveUsage = usage/range;
+	
+	var costTotal = ((g1 * gP1) + (g2 * gP2) + (g1 * gP1A) + (g2 * gP2A) + (g1 * tP1) + (g2 * tP2) + (g1 * tP1A) + (g2 * tP2A) + (g1 * sP1) + (g2 * sP2) + (g1 * sP1A) + (g2 * sP2A) + (g1 * dP1) + (g2 * dP2) + (g1 * dP1A) + (g2 * dP2A) + M ) * ( 1 + hst );
+	
+	var aveCost = costTotal/usage;
+	
+	var costGas = (g1 * gP1) + (g2 * gP2) + (g1 * gP1A) + (g2 * gP2A)
+	var costRatio = (costGas/costTotal)*100
+	
+	document.getElementById("costGas").innerHTML = '$' + (costGas * ( 1 + hst)).toFixed(2);
+	document.getElementById("costAll").innerHTML = '$' + costTotal.toFixed(2);
+	document.getElementById("costRemainder").innerHTML = '$' + ((costTotal * ( 1 + hst)) - (costGas * ( 1 + hst))).toFixed(2);
+	document.getElementById("aveUsage").innerHTML = aveUsage.toFixed(1) + ' m^3/day';
+	document.getElementById("cost").innerHTML = (costGas*100/usage).toFixed(1) + ' cents/m^3';
+	document.getElementById("totalCost").innerHTML = (costTotal*100/usage).toFixed(1) +' cents/m^3';
+	document.getElementById("percent").innerHTML = costRatio.toFixed(0) + '%';
+
+	//these values will pass to costBreakdown() below
+	var transportation = (tP1 + tP1A) * g1 + (tP2 + tP2A) * g2;
+	var storage = (sP1 + sP1A) * g1 + (sP2 + sP2A) * g2;
+	var delivery = (dP1 + dP1A) * g1 + (dP2 + dP2A) * g2;
+
+	costBreakdown(costTotal, transportation, storage, delivery, costGas);
+};
+
+var divMonthlyFee = document.getElementsByClassName('monthlyFee');
+var divTransportation = document.getElementsByClassName('transportation');
+var divStorage = document.getElementsByClassName('storage');
+var divDelivery = document.getElementsByClassName('delivery');
+var divTax = document.getElementsByClassName('tax');
+var divNaturalGas = document.getElementsByClassName('naturalGas');
+
+function costBreakdown(a, b, c, d, e) {
+
+	var costTotal = a;
+	var transportation = b;
+	var storage = c;
+	var delivery = d;
+	var tax = (costTotal / (1 + hst)) * hst;
+	var gas = e;
+	
+	var monthlyFeeWidth = M*100/costTotal;
+	var transportationWidth = transportation*100/costTotal;
+	var storageWidth = storage*100/costTotal;
+	var deliveryWidth = delivery*100/costTotal;
+	var taxWidth = tax*100/costTotal;
+	var gasWidth = gas*100/costTotal;
+
+	divMonthlyFee[0].style.width = `${monthlyFeeWidth}%`;
+	divTransportation[0].style.width = `${transportationWidth}%`;
+	divStorage[0].style.width = `${storageWidth}%`;
+	divDelivery[0].style.width = `${deliveryWidth}%`;
+	divTax[0].style.width = `${taxWidth}%`;
+	divNaturalGas[0].style.width = `${gasWidth}%`;
+}
+
+</script>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
