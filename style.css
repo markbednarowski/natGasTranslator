@@ -1,0 +1,71 @@
+body {
+	font-family: 'arial';	
+}
+* {
+	margin: 0;
+	padding: 0;
+}
+h1 {
+	text-align: center;
+	color: blue;
+}
+.date {
+	display: flex;
+	justify-content: center;
+}
+.date input{
+	border: 1px solid green;
+	margin: 0px 1px;
+}
+form {
+	margin-top: 10px;
+}
+.numbers {
+	display: flex;
+	justify-content: center;
+}
+ul.nums {
+	width: 40%;
+	list-style: none;
+}
+input[type='number'] {
+	width: 95%;
+	border: 1px solid blue;
+}
+li.fee::before {
+	content: "monthly fee in $";
+}
+.output {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.items, .values {
+	display: flex;
+	flex-direction: column;
+}
+.items p {
+	text-align: right;
+	color: blue;
+}
+.p {
+	width: 20%;
+	margin: 10px auto;
+}
+.breakdown {
+	display: flex;
+	flex-direction: row;
+	width: 90%;
+	height: 40px;
+	margin: 10px auto;
+}
+.breakdown div {
+	border:1px solid green;
+	text-align: center;
+}
+div span {
+	font-size: 0.5em;
+}
+
+
+
