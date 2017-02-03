@@ -63,9 +63,9 @@
 <div class="output">
 
 	<div class="items">
-		<p>cost of everything + 13% HST&equals;&nbsp;</p>
-		<p>cost of just the consumed gas + 13% HST&equals;&nbsp;</p>
-		<p>cost of the remainder + 13% HST&equals;&nbsp;</p>
+		<p>cost of everything &equals;&nbsp;</p>
+		<p>cost of just the consumed gas &equals;&nbsp;</p>
+		<p>cost of everything else &equals;&nbsp;</p>
 		<p>average consumption of the gas &equals;&nbsp;</p>
 		<p>average price of gas &equals;&nbsp;</p>
 		<p>average price of everything &equals;&nbsp;</p>
@@ -162,9 +162,9 @@ function transform() {
 	var costGas = (g1 * gP1) + (g2 * gP2) + (g1 * gP1A) + (g2 * gP2A)
 	var costRatio = (costGas/costTotal)*100
 	
-	document.getElementById("costGas").innerHTML = '$' + (costGas * ( 1 + hst)).toFixed(2);
 	document.getElementById("costAll").innerHTML = '$' + costTotal.toFixed(2);
-	document.getElementById("costRemainder").innerHTML = '$' + ((costTotal * ( 1 + hst)) - (costGas * ( 1 + hst))).toFixed(2);
+	document.getElementById("costGas").innerHTML = '$' + costGas.toFixed(2);
+	document.getElementById("costRemainder").innerHTML = '$' + (costTotal - costGas).toFixed(2);
 	document.getElementById("aveUsage").innerHTML = aveUsage.toFixed(1) + ' m^3/day';
 	document.getElementById("cost").innerHTML = (costGas*100/usage).toFixed(1) + ' cents/m^3';
 	document.getElementById("totalCost").innerHTML = (costTotal*100/usage).toFixed(1) +' cents/m^3';
