@@ -86,17 +86,6 @@
 </div>
 <hr/>
 
-<!-- <p class="p">visual breakdown of cost</p>
-<div class="breakdown">
-	<div class="monthlyFee"><span>monthly fee</span></div>
-	<div class="transportation"><span>transpXXXXXortation</span></div>
-	<div class="storage"><span>storage</span></div>
-	<div class="delivery"><span>delivery</span></div>
-	<div class="tax"><span>tax</span></div>
-	<div class="naturalGas"><span>gas</span></div>
-</div>
-<hr /> -->
-
 <div id="container" 
 	style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
@@ -174,16 +163,13 @@ function transform() {
 	document.getElementById("totalCost").innerHTML = (costTotal*100/usage).toFixed(1) +' cents/m^3';
 	document.getElementById("percent").innerHTML = costRatio.toFixed(0) + '%';
 
-	//these values will pass to costBreakdown() below
 	var transportation = (tP1 + tP1A) * g1 + (tP2 + tP2A) * g2;
 	var storage = (sP1 + sP1A) * g1 + (sP2 + sP2A) * g2;
 	var delivery = (dP1 + dP1A) * g1 + (dP2 + dP2A) * g2;
 	var tax = (costTotal / (1 + hst)) * hst;
 	var gas = costGas;
 
-	// costBreakdown(costTotal, transportation, storage, delivery, costGas);
-
-		var monthlyFeeWidth = M*100/costTotal;
+	var monthlyFeeWidth = M*100/costTotal;
 	var transportationWidth = transportation*100/costTotal;
 	var storageWidth = storage*100/costTotal;
 	var deliveryWidth = delivery*100/costTotal;
@@ -246,39 +232,10 @@ function transform() {
 
 };
 
-// var divMonthlyFee = document.getElementsByClassName('monthlyFee');
-// var divTransportation = document.getElementsByClassName('transportation');
-// var divStorage = document.getElementsByClassName('storage');
-// var divDelivery = document.getElementsByClassName('delivery');
-// var divTax = document.getElementsByClassName('tax');
-// var divNaturalGas = document.getElementsByClassName('naturalGas');
-
-// function costBreakdown(a, b, c, d, e) {
-
-// 	var costTotal = a;
-// 	var transportation = b;
-// 	var storage = c;
-// 	var delivery = d;
-// 	var tax = (costTotal / (1 + hst)) * hst;
-// 	var gas = e;
-	
-
-
-// 	divMonthlyFee[0].style.width = `${monthlyFeeWidth}%`;
-// 	divTransportation[0].style.width = `${transportationWidth}%`;
-// 	divStorage[0].style.width = `${storageWidth}%`;
-// 	divDelivery[0].style.width = `${deliveryWidth}%`;
-// 	divTax[0].style.width = `${taxWidth}%`;
-// 	divNaturalGas[0].style.width = `${gasWidth}%`;
-
-
-	
-// }
 </script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.10/highcharts.js"></script> -->
 
 </body>
 
