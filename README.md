@@ -40,6 +40,9 @@ a bill formatted in the confusing way that it is.
 
 Hope this sheds some light on your bill.
 
+Preview the .html file at http://htmlpreview.github.com/
+
+
 
 
 
